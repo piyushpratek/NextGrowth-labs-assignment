@@ -47,7 +47,6 @@
       <div class="row">
         <div class="col-md-4">
           <div class="card mb-4 box-shadow">
-
             <div class="card-header">
               <h4 class="my-0 font-weight-normal">Free</h4>
             </div>
@@ -289,9 +288,35 @@
           }
       }
 
+          // Function to highlight the pricing plan based on the number of users selected
+    function highlightPricingPlan() {
+        const userSlider = document.getElementById("userSlider");
+        const highlightedPlan = document.getElementById("highlightedPlan");
+        const userSliderValue = parseInt(userSlider.value);
+
+        // Define the user ranges for each plan
+        const userRanges = [0, 10, 20, 30]; // Update with your specific ranges
+
+        // Check which plan range the selected number of users falls into
+        if (userSliderValue >= userRanges[0] && userSliderValue < userRanges[1]) {
+            highlightedPlan.textContent = "Free";
+        } else if (userSliderValue >= userRanges[1] && userSliderValue < userRanges[2]) {
+            highlightedPlan.textContent = "Pro";
+        } else if (userSliderValue >= userRanges[2] && userSliderValue <= userRanges[3]) {
+            highlightedPlan.textContent = "Enterprise";
+        }
+    }
+
       // Attach an event listener to the submit button
       const submitButton = document.getElementById("submitForm");
       submitButton.addEventListener("click", saveFormData);
+
+       // Attach an event listener to the user slider to highlight the plan
+    const userSlider = document.getElementById("userSlider");
+    userSlider.addEventListener("input", highlightPricingPlan);
+
+    // Initialize the highlighted plan when the page loads
+    highlightPricingPlan();
   </script>
 
 
