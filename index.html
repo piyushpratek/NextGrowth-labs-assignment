@@ -262,6 +262,39 @@
     </div>
 
     <!-- always place script in the end of body -->
+    <script>
+      // Function to save data in local storage
+      function saveFormData() {
+          const nameInput = document.getElementById("name");
+          const emailInput = document.getElementById("email");
+          const orderCommentsInput = document.getElementById("orderComments");
+
+          // Get the values from the input fields
+          const name = nameInput.value;
+          const email = emailInput.value;
+          const orderComments = orderCommentsInput.value;
+
+          // Check if local storage is available
+          if (typeof(Storage) !== "undefined") {
+              // Save data in local storage
+              localStorage.setItem("name", name);
+              localStorage.setItem("email", email);
+              localStorage.setItem("orderComments", orderComments);
+              
+              // Display a confirmation message (you can customize this)
+              alert("Data saved in local storage!");
+          } else {
+              // Local storage is not available, handle this case
+              alert("Local storage is not supported by your browser.");
+          }
+      }
+
+      // Attach an event listener to the submit button
+      const submitButton = document.getElementById("submitForm");
+      submitButton.addEventListener("click", saveFormData);
+  </script>
+
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
