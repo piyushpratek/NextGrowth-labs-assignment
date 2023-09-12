@@ -152,10 +152,12 @@
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" placeholder="Enter your name">
                     </div>
+
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" placeholder="Enter your email">
                     </div>
+
                     <div class="form-group">
                         <label for="orderComments">Order Comments</label>
                         <textarea class="form-control" id="orderComments" rows="3" placeholder="Enter any order comments"></textarea>
@@ -177,7 +179,7 @@
     </div>
 </div>
 
-<!-- Local Storage  -->
+<!-- Form Submission  -->
 <script>
     function saveFormData() {
         const nameInput = document.getElementById("name");
@@ -188,21 +190,38 @@
         const email = emailInput.value;
         const orderComments = orderCommentsInput.value;
 
-        if (typeof(Storage) !== "undefined") {
-            localStorage.setItem("name", name);
-            localStorage.setItem("email", email);
-            localStorage.setItem("orderComments", orderComments);
+        const formData = new FormData();
+        formData.append("accesscode", "SQAKV95RT4M8LGPLN57VTOPZ0");
+        formData.append("firstname", name);
+        formData.append("email", email);
+        formData.append("message", orderComments);
 
-            alert("Data saved in local storage!");
-
-            const modal = new bootstrap.Modal(document.getElementById("pricingModal"));
-            modal.hide();
-            location.reload();
-        } else {
-            alert("Local storage is not supported by your browser.");
+        fetch("https://forms.maakeetoo.com/formapi/362", {
+            method: "POST",
+            body: formData,
+        })
+        .then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        return response.json();
+    })
+        .then((data) => {
+            console.log("Form submission response:", data);
+            alert("Form submitted successfully!");
+            resetForm();
+        })
+        .catch((error) => {
+            console.error("Form submission error:", error);
+            alert("Form submission failed. Please try again later.");
+        });
     }
 
+    function resetForm() {
+        document.getElementById("pricingForm").reset();
+        const modal = new bootstrap.Modal(document.getElementById("pricingModal"));
+        modal.hide();
+    }
     // Function to highlight the pricing plan based on the number of users selected
     function highlightPricingPlan() {
         const userSlider = document.getElementById("userSlider");
@@ -210,14 +229,18 @@
         const userSliderValue = parseInt(userSlider.value);
 
         const userRanges = [0, 10, 20, 30]; 
+        let highlightedPlanText = "";
+        
         if (userSliderValue >= userRanges[0] && userSliderValue < userRanges[1]) {
-            highlightedPlan.textContent = "Free";
-        } else if (userSliderValue >= userRanges[1] && userSliderValue < userRanges[2]) {
-            highlightedPlan.textContent = "Pro";
-        } else if (userSliderValue >= userRanges[2] && userSliderValue <= userRanges[3]) {
-            highlightedPlan.textContent = "Enterprise";
+                highlightedPlanText = "Free";
+            } else if (userSliderValue >= userRanges[1] && userSliderValue < userRanges[2]) {
+                highlightedPlanText = "Pro";
+            } else if (userSliderValue >= userRanges[2] && userSliderValue <= userRanges[3]) {
+                highlightedPlanText = "Enterprise";
+            }
+
+            highlightedPlan.textContent = highlightedPlanText;
         }
-    }
     const submitButton = document.getElementById("submitForm");
     submitButton.addEventListener("click", saveFormData);
 
