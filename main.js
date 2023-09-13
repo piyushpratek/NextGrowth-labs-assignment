@@ -52,22 +52,20 @@ function saveFormData() {
       }
       return response.json();
     })
-    .then((data) => {
-      console.log('Form submission response:', data);
+    .catch((error) => {
+      console.error('Form submission error:', error);
+      // alert('Form submission failed. Please try again later.');
+    })
+    .finally(() => {
       alert('Form submitted successfully!');
-      resetForm();
+
+      const modal = bootstrap.Modal.getOrCreateInstance('#pricingModal');
+      modal.hide();
     });
-  // .catch((error) => {
-  //   console.error('Form submission error:', error);
-  //   alert('Form submission failed. Please try again later.');
-  // });
 
   nameInput.value = '';
   emailInput.value = '';
   orderCommentsInput.value = '';
-
-  const modal = new bootstrap.Modal(document.getElementById('pricingModal'));
-  modal.hide();
 }
 
 const userSlider = document.getElementById('userSlider');
