@@ -56,11 +56,11 @@ function saveFormData() {
       console.log('Form submission response:', data);
       alert('Form submitted successfully!');
       resetForm();
-    })
-    .catch((error) => {
-      console.error('Form submission error:', error);
-      alert('Form submission failed. Please try again later.');
     });
+  // .catch((error) => {
+  //   console.error('Form submission error:', error);
+  //   alert('Form submission failed. Please try again later.');
+  // });
 
   nameInput.value = '';
   emailInput.value = '';
